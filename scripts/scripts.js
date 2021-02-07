@@ -1,24 +1,20 @@
 const Modal = {
-
-    //desafio trocaras duas por um unica - toogle - existe na classlist - que liga e desliga
     open() {
         // Abrir Modal
-        //Adicionar a classe active ao Modal
+        // Adicionar a classe active ao Modal
         document.querySelector('.modal-overlay').classList.add('active')
     },
     close() {
-        //Fechar o Modal
+        // Fechar o Modal
         // Remover a classe active do Modal
         document.querySelector('.modal-overlay').classList.remove('active')
     }
 }
 
 const Storage = {
-    //get pegar as informações
     get() {
         return JSON.parse(localStorage.getItem("dev.finances:transactions")) || []
     },
-    //set guarda as informações
     set(transactions) {
         localStorage.setItem("dev.finances:transactions", JSON.stringify(transactions))
     }
@@ -41,12 +37,9 @@ const Transaction = {
 
     incomes() {
         let income = 0
-        // Pegar todas as transaçõese para cada uma
         Transaction.all.forEach(transaction => {
-            // Verificar se é maior que zero
             if (transaction.amount > 0) {
-                //somar a uma variavel e retornar a variavel
-                income = income + transaction.amount;
+                income += transaction.amount;
             }
         })
         return income;
@@ -54,12 +47,9 @@ const Transaction = {
 
     expenses() {
         let expense = 0
-        // Pegar todas as transaçõese para cada uma
         Transaction.all.forEach(transaction => {
-            // Verificar se é menor que zero
             if (transaction.amount < 0) {
-                //somar a uma variavel e retornar a variavel
-                expense = expense + transaction.amount;
+                expense += transaction.amount;
             }
         })
         return expense;
@@ -86,7 +76,6 @@ const DOM = {
 
         const amount = Utils.formatCurrency(transaction.amount)
 
-        //montando a mascara html / criando o html
         const html = `
     		<td class="description">${transaction.description}</td>
     		<td class="${CSSclass}">${amount}</td>
@@ -113,29 +102,24 @@ const Utils = {
 
     formatAmount(value) {
         value = Number(value.replace(/\,\./g, "")) * 100
-        //value = Number(value) * 100
-        //console.log(value)
         return Math.round(value)
     },
 
     formatDate(date) {
         const splittedDate = date.split("-")
-        //utlizando template literals
         return `${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}`
     },
 
     formatCurrency(value) {
         const signal = Number(value) < 0 ? "-" : ""
 
-        //usando regex
         value = String(value).replace(/\D/g, "")
 
-        value = Number(value) / 100 //para desconsiderar os zeros a direita da virgula (virgula não informada)
+        value = Number(value) / 100
 
         value = value.toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",
-            //minimumFractionDigits: 2
         })
 
         return signal + value
@@ -158,9 +142,7 @@ const Form = {
 
     validateFields() {
         const { description, amount, date } = Form.getValues()
-        //Verifico se a descrição esta vazia OU qualquer outro
         if (description.trim() === "" || amount.trim() === "" || date.trim() === "") {
-            //Construindo um objeto de erro
             throw new Error("Por favor, preencha todos os campos!")
         }
     },
@@ -192,35 +174,22 @@ const Form = {
     submit(event) {
         event.preventDefault()
 
-        //tentar
+
         try {
-            // verificar se todas as informações foram preenchida
             Form.validateFields()
-            // formatar os dados para salvar
             const transaction = Form.formatValues()
-            // salvar
             Form.saveTransaction(transaction)
-            // apagar os dados do formulário
             Form.clearFields()
-            //  modal feche
             Modal.close()
-            // atualizar a aplicação. no Save há um reload dentro da função
-            //App.reload()
 
         } catch (error) {
-            alert(error.message) //uma das maneiras, outra seria esconder parte do modal e mostrar a menagem nele.
+            alert(error.message)
         }
-
-
     },
 }
 
 const App = {
     init() {
-        //Transaction.all.forEach(transaction, index => {
-        //    DOM.addTransaction(transaction, index)
-        //})
-        //mesmo que o de baixo/ é um atalho o de baixo
         Transaction.all.forEach(DOM.addTransaction)
 
         DOM.updateBalance()
