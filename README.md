@@ -18,4 +18,4 @@ O projeto foi desenvolvido com as seguintes tecnologias:
   
 Você poderá visualizar clicando no link abaixo:
   
-<a target="_blank" href="https://rhaycf.github.io/finances/#">Clique Aqui</a>
+<a target="_blank" href="">Clique Aqui</a>
