@@ -18,4 +18,4 @@ O projeto foi desenvolvido com as seguintes tecnologias:
   
 Você poderá visualizar clicando no link abaixo:
   
-<a target="_blank" href="">Clique Aqui</a>
+<a target="_blank" href="https://easyfinances.netlify.app/#">Clique Aqui</a>
